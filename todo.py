@@ -1,5 +1,9 @@
 import time
 from plyer import notification
+from colorama import Fore, Style, init
+
+# Initialize colorama for colored text
+init(autoreset=True)
 
 class TodoApp:
     def __init__(self):
@@ -7,23 +11,23 @@ class TodoApp:
 
     def add_task(self, task):
         self.tasks.append(task)
-        print(f"Task '{task}' added.")
+        print(Fore.GREEN + f"Task '{task}' added." + Style.RESET_ALL)
         self.notify_task(task)  # Notify the user after adding the task
 
     def view_tasks(self):
         if not self.tasks:
-            print("No tasks available.")
+            print(Fore.YELLOW + "No tasks available." + Style.RESET_ALL)
         else:
-            print("Your To-Do List:")
+            print(Fore.CYAN + "Your To-Do List:" + Style.RESET_ALL)
             for idx, task in enumerate(self.tasks, 1):
-                print(f"{idx}. {task}")
+                print(Fore.BLUE + f"{idx}. {task}" + Style.RESET_ALL)
 
     def remove_task(self, task_index):
         if 0 < task_index <= len(self.tasks):
             removed_task = self.tasks.pop(task_index - 1)
-            print(f"Task '{removed_task}' removed.")
+            print(Fore.RED + f"Task '{removed_task}' removed." + Style.RESET_ALL)
         else:
-            print("Invalid task number.")
+            print(Fore.YELLOW + "Invalid task number." + Style.RESET_ALL)
 
     def notify_task(self, task):
         """Send desktop notification"""
@@ -38,10 +42,10 @@ def main():
 
     while True:
         print("\nOptions:")
-        print("1. Add Task")
-        print("2. View Tasks")
-        print("3. Remove Task")
-        print("4. Exit")
+        print(Fore.MAGENTA + "1. Add Task" + Style.RESET_ALL)
+        print(Fore.MAGENTA + "2. View Tasks" + Style.RESET_ALL)
+        print(Fore.MAGENTA + "3. Remove Task" + Style.RESET_ALL)
+        print(Fore.MAGENTA + "4. Exit" + Style.RESET_ALL)
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -50,13 +54,16 @@ def main():
         elif choice == '2':
             app.view_tasks()
         elif choice == '3':
-            task_index = int(input("Enter task number to remove: "))
-            app.remove_task(task_index)
+            try:
+                task_index = int(input("Enter task number to remove: "))
+                app.remove_task(task_index)
+            except ValueError:
+                print(Fore.YELLOW + "Invalid input. Please enter a number." + Style.RESET_ALL)
         elif choice == '4':
-            print("Exiting app.")
+            print(Fore.CYAN + "Exiting app. Goodbye!" + Style.RESET_ALL)
             break
         else:
-            print("Invalid choice. Try again.")
+            print(Fore.YELLOW + "Invalid choice. Try again." + Style.RESET_ALL)
 
         time.sleep(1)
 
